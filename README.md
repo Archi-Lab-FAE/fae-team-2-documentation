@@ -6,7 +6,10 @@ Mithilfe dieser Daten kann ermittelt werden, ob sich ein [dementiell Erkrankter]
 
 **Weitere Informationen können aus dem [Wiki](https://github.com/Archi-Lab-FAE/fae-team-2-documentation/wiki) entnommen werden.**
 
-
+#### Anmerkungen SB 29.11. (bitte nach Bearbeitung löschen)
+* Das README sollte die "Eintrittskarte" in das Repo bieten. Hierhin gehört:
+   * das Domain Vision Statement - in einer Form, dass ein **Außenstehender** versteht, worum es geht.
+   * Hinweise auf Weiterlesen (Wiki)
 
 
 <!--
