@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.0.2
 info:
   title: Zonenalarmsystem (FAE-Team2-Service)
   description: >-
@@ -10,11 +10,17 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   version: 1.0.0
+  
 externalDocs:
   description: Global Documentation
   url: 'https://fae.archi-lab.io/'
+  
 servers:
-  - url: 'https://fae.archi-lab.io/'
+  - url: 'https://fae.archi-lab.io'
+    description: Production server
+  - url: 'http://localhost:8080'
+    description: Local test server
+  
 tags:
   - name: Demenziell Erkrankter
     description: Genaue Beschreibung auf in der [Dokumentation](https://fae.archi-lab.io/)
@@ -22,33 +28,9 @@ tags:
     description: Genaue Beschreibung auf in der [Dokumentation](https://fae.archi-lab.io/)
   - name: Zone
     description: Genaue Beschreibung auf in der [Dokumentation](https://fae.archi-lab.io/)
+    
 paths:
   '/demenziellerkrankter':
-    put:
-      tags:
-        - Demenziell Erkrankter
-      summary: Daten eines Erkranten aktualisieren
-      operationId: updateDemenziellerkankten
-      requestBody:
-        description: Objekt eines Demenziell erkranten, welches aktualisiert werden soll.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DemenziellErkrankter'
-        required: true
-      responses:
-        '200':
-          description: Objekt wurde aktualisiert.
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DemenziellErkrankter'
-        '400':
-          description: Die ID ist nicht valide.
-        '404':
-          description: Objekt konnte nicht gefunden werden.
-        '405':
-          description: Validationsfehler
     post:
       tags:
         - Demenziell Erkrankter
@@ -69,13 +51,54 @@ paths:
               schema:
                 $ref: '#/components/schemas/DemenziellErkrankter'
         '405':
-          description: Invalide Daten.
-          content: {}
+          description: Invalide Daten.}
+
+  '/demenziellerkrankter/{id}':
+    put:
+      tags:
+        - Demenziell Erkrankter
+      summary: Daten eines Erkranten aktualisieren
+      operationId: updateDemenziellerkankten
+      parameters:
+        - name: id
+          in: path
+          description: ID des demenziell Erkranten, welcher aktualisiert werden soll.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Objekt eines demenziell Erkranten, welches aktualisiert werden soll.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemenziellErkrankter'
+        required: true
+      responses:
+        '200':
+          description: Objekt wurde aktualisiert.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemenziellErkrankter'
+        '400':
+          description: Die ID ist nicht valide.
+        '404':
+          description: Objekt konnte nicht gefunden werden.
+        '405':
+          description: Validationsfehler
+    
     get:
       tags: 
         - Demenziell Erkrankter
       summary: Die Daten eines Demenziell Erkrankten auslesen.
       operationId: getDemenziellErkankten
+      parameters:
+        - name: id
+          in: path
+          description: ID des demenziell Erkranten, welcher ausgelesen werden soll.
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: successful operation
@@ -83,6 +106,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DemenziellErkrankter'
+                
+                
   '/positionssender/{id}':
     get:
       tags:
@@ -95,8 +120,7 @@ paths:
           description: ID des Positionssender der zurückgeliefert werden soll.
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           description: successful operation
@@ -106,10 +130,42 @@ paths:
                 $ref: '#/components/schemas/Positionssender'
         '400':
           description: ID ist nicht valide.
-          content: {}
         '404':
           description: Positionssender konnte nicht gefunden werden.
-          content: {}
+          
+    put: 
+      tags:
+        - Positionssender
+      summary: Daten eines Positionssenders aktualisieren
+      operationId: updatePositionssender
+      parameters:
+        - name: id
+          in: path
+          description: ID des Positionssender der aktualisiert werden soll.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Objekt eines Positionssenders, welches aktualisiert werden soll.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Positionssender'
+        required: true
+      responses:
+        '200':
+            description: Objekt wurde aktualisiert.
+            content: 
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Positionssender'
+        '400':
+          description: Die ID ist nicht valide.
+        '404':
+          description: Objekt konnte nicht gefunden werden.
+        '405':
+          description: Validationsfehler
+          
   '/positionssender':
     get:
       tags:
@@ -133,10 +189,9 @@ paths:
                   $ref: '#/components/schemas/Positionssender'
         '400':
           description: ID ist nicht valide.
-          content: {}
         '404':
           description: Positionssender konnte nicht gefunden werden.
-          content: {}
+          
     post:
       tags:
         - Positionssender
@@ -158,35 +213,7 @@ paths:
                 $ref: '#/components/schemas/Positionssender'
         '405':
           description: Invalide Daten.
-          content: {}
-    put: 
-      tags:
-        - Positionssender
-      summary: Daten eines Positionssenders aktualisieren
-      operationId: updatePositionssender
-      requestBody:
-        description: Objekt eines Positionssenders, welches aktualisiert werden soll.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Positionssender'
-        required: true
-      responses:
-        '200':
-            description: Objekt wurde aktualisiert.
-            content: 
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Positionssender'
-        '400':
-          description: Die ID ist nicht valide.
-          content: {}
-        '404':
-          description: Objekt konnte nicht gefunden werden.
-          content: {}
-        '405':
-          description: Validationsfehler
-          content: {}
+    
   '/positionssender/{id}/zone':
     get:
       tags:
@@ -200,8 +227,7 @@ paths:
           description: ID des Positionssenders
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           description: successful operation
@@ -213,39 +239,10 @@ paths:
                   $ref: '#/components/schemas/Zone'
         '400':
           description: Invalid ID supplied
-          content: {}
         '404':
           description: Pet not found
-          content: {}
+
   '/zone':
-    put:
-      tags:
-        - Zone
-      summary: Daten einer Zone
-      operationId: updateZone
-      requestBody:
-        description: Objekt einer Zone, welches aktualisiert werden soll.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Zone'
-        required: true
-      responses:
-        '200':
-          description: Objekt wurde aktualisiert.
-          content: 
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Zone'
-        '400':
-          description: Die ID ist nicht valide.
-          content: {}
-        '404':
-          description: Objekt konnte nicht gefunden werden.
-          content: {}
-        '405':
-          description: Validationsfehler
-          content: {}
     post:
       tags:
         - Zone
@@ -267,7 +264,7 @@ paths:
                 $ref: '#/components/schemas/Zone'
         '405':
           description: Invalide Daten.
-          content: {}
+          
   '/zone/{id}':
     get:
       tags: 
@@ -280,8 +277,7 @@ paths:
           description: ID der Zone die zurückgeliefert werden soll.
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           description: successful operation
@@ -289,6 +285,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Zone'
+                
+    put:
+      tags:
+        - Zone
+      summary: Daten einer Zone
+      operationId: updateZone
+      parameters:
+        - name: id
+          in: path
+          description: ID der Zone die aktualisiert werden soll.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Objekt einer Zone, welches aktualisiert werden soll.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Zone'
+        required: true
+      responses:
+        '200':
+          description: Objekt wurde aktualisiert.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Zone'
+        '400':
+          description: Die ID ist nicht valide.
+        '404':
+          description: Objekt konnte nicht gefunden werden.
+        '405':
+          description: Validationsfehler
+
+                
 components:
   schemas:
     DemenziellErkrankter:
@@ -356,4 +387,6 @@ components:
     ZonenTyp:
       type: string
       enum: ['GEWOHNT', 'UNGEWOHNT']
-          
+      
+      
+      
