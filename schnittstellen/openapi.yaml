@@ -331,6 +331,10 @@ components:
         name:
           type: string
           example: 'K. Löhler'
+        zonen:
+          type: array
+          items:
+            $ref: '#/components/schemas/Zone'
           
     Positionssender:
       type: object
