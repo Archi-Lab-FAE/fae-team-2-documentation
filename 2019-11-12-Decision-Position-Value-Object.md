@@ -6,6 +6,7 @@ categories: team2
 ---
 
 **Betroffene Entität**: Position
+
 Vorherige Überlegung:
 Bei der Implementierung hat sich herausgestellt, dass die Entität Position keine Entität ist,
 sondern ein zu den Entitäten GPS-Sender und Zone zugehöriges Value Object ist.
